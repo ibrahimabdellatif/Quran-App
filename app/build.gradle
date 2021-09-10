@@ -69,4 +69,11 @@ dependencies {
 //    implementation "android.arch.navigation:navigation-fragment-ktx:2.3.0"
 //    implementation "android.arch.navigation:navigation-ui-ktx:2.3.0"
 //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:1.12.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
+
+    // Retrofit with Moshi Converter
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 }
