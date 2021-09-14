@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:layout_marginBottom="8dp"
-    android:layout_height="wrap_content">
+    android:layout_marginBottom="8dp">
 
     <TextView
         android:id="@+id/tv_reader_name"
@@ -24,13 +24,25 @@
         android:id="@+id/tv_rewaya_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="13dp"
         android:layout_marginBottom="7dp"
         android:text="حفص عن عاصم"
         android:textSize="18dp"
-        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tv_first_letter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="أ"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_reader_name"
+        app:layout_constraintStart_toEndOf="@+id/tv_rewaya_type"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

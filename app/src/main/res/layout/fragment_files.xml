@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv_files"
+        android:padding="5dp"
         tools:listitem="@layout/file_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

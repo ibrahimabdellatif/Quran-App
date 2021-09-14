@@ -1,6 +1,6 @@
 package com.ibrahim.quranapp.network
 
-import com.ibrahim.quranapp.Data.QuranData
+import com.ibrahim.quranapp.Data.SurahData
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
@@ -8,8 +8,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
-//   api/reciters/  >> this for get method
-private const val BASE_URL = "https://qurani-api.herokuapp.com/"
+//   https://api.alquran.cloud/v1/surah
+private const val BASE_URL = "https://api.alquran.cloud/"
 
 //init moshi for retrofit
 private val moshi = Moshi.Builder()
@@ -24,13 +24,13 @@ private val retrofit = Retrofit
     .build()
 
 /**
- * create public interface to call [getData]
+ * create public interface to call [getSurahData]
  */
-interface QuranApiService {
-    @GET("api/reciters/")
-     fun getData(): Call<List<QuranData>>
+interface SurahApiService {
+    @GET("v1/surah")
+    fun getSurahData(): Call<List<SurahData>>
 }
 
-object QuranApi {
-    val retrofitService: QuranApiService by lazy { retrofit.create(QuranApiService::class.java) }
+object SurahApi {
+    val retrofitService: SurahApiService by lazy { retrofit.create(SurahApiService::class.java) }
 }
