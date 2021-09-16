@@ -1,10 +1,12 @@
 package com.ibrahim.quranapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,18 +18,23 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FilesFragment : Fragment() {
+class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var testTextView: TextView? = null
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
-    var surahData: List<SurahData>? = null
     var data: List<Data>? = null
+    var serverValue: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_files, container, false)
+        val view = inflater.inflate(R.layout.fragment_files, container, false)
+
+        serverValue = arguments?.getString("server")
+        Log.i("on file fragment ", serverValue.toString())
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,7 +49,7 @@ class FilesFragment : Fragment() {
         layoutManager = LinearLayoutManager(activity)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = layoutManager
-        recyclerView?.adapter = FilesAdapter(surahData)
+        recyclerView?.adapter = FilesAdapter(surahData, this)
     }
 
     fun initRetrofit(view: View) {
@@ -62,6 +69,13 @@ class FilesFragment : Fragment() {
             }
 
         })
+
+    }
+
+    override fun onItemClick(position: Int) {
+        super.onItemClick(position)
+
+        Toast.makeText(context, "$serverValue", Toast.LENGTH_SHORT).show()
 
     }
 

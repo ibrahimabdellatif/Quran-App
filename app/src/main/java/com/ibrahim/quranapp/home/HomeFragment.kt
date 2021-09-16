@@ -20,17 +20,19 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragment : Fragment() , HomeAdapter.OnItemClickListener {
+class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
 
-    private lateinit var  viewModel: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
 
     var quranData: List<QuranData>? = null
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
     var testTextView: TextView? = null
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        Log.i("homefragment" , "from fragment")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.i("homefragment", "from fragment")
 //        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 //
 //        viewModel.quranData.observe(viewLifecycleOwner , Observer { quranList ->
@@ -38,10 +40,8 @@ class HomeFragment : Fragment() , HomeAdapter.OnItemClickListener {
 //        })
 
 
-
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ class HomeFragment : Fragment() , HomeAdapter.OnItemClickListener {
         layoutManager = LinearLayoutManager(activity)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = layoutManager
-        recyclerView?.adapter = HomeAdapter(quranData , this)
+        recyclerView?.adapter = HomeAdapter(quranData, this)
 
     }
 
@@ -81,11 +81,16 @@ class HomeFragment : Fragment() , HomeAdapter.OnItemClickListener {
 
     @SuppressLint("ResourceType")
     override fun onItemClick(position: Int) {
-        Toast.makeText(context , "hello : $position" , Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "hello : ${quranData?.get(position)?.Server}", Toast.LENGTH_SHORT)
+            .show()
+
         val filesFragment = FilesFragment()
 
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()
+        val bundle = Bundle()
+        bundle.putString("server", quranData?.get(position)?.Server)
+        filesFragment.arguments = bundle
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()
 
     }
 }
