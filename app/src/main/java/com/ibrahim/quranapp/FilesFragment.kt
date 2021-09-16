@@ -1,5 +1,8 @@
 package com.ibrahim.quranapp
 
+import android.media.AudioAttributes
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +27,8 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var layoutManager: RecyclerView.LayoutManager? = null
     var data: List<Data>? = null
     var serverValue: String? = null
+
+    //private var uri:Uri? =null //Uri.parse("https://server8.mp3quran.net/ahmad_huth/001.mp3")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,8 +80,38 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
 
-        Toast.makeText(context, "$serverValue", Toast.LENGTH_SHORT).show()
+        //
+        var testUrl = ""
+        if (position + 1 in 1..9) {
+            testUrl = "$serverValue/00${position + 1}.mp3"
+        } else if (position + 1 in 10..99) {
+            testUrl = "$serverValue/0${position + 1}.mp3"
+        } else {
+            testUrl = "$serverValue/${position + 1}.mp3"
+        }
 
+        var uri = Uri.parse(testUrl)
+        mediaPlayer(uri)
+        Toast.makeText(context, "${position + 1}", Toast.LENGTH_SHORT).show()
+
+
+    }
+
+    fun mediaPlayer(uri: Uri) {
+        var uri = uri
+        val mediaPlayer = MediaPlayer().apply {
+            setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .build()
+            )
+
+            context?.let { setDataSource(it, uri) }
+            prepare()
+            start()
+        }
+        mediaPlayer.start()
     }
 
     fun getFakeData(): List<SurahData> = listOf(
