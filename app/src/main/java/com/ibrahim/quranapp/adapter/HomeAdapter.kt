@@ -1,11 +1,11 @@
-package com.ibrahim.quranapp.Adapters
+package com.ibrahim.quranapp.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.Data.QuranData
+import com.ibrahim.quranapp.data.QuranData
 import com.ibrahim.quranapp.R
 
 class HomeAdapter(

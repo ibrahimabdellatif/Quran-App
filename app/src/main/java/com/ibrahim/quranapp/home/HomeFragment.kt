@@ -1,18 +1,20 @@
-package com.ibrahim.quranapp
+package com.ibrahim.quranapp.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.Adapters.HomeAdapter
-import com.ibrahim.quranapp.Data.QuranData
+import com.ibrahim.quranapp.FilesFragment
+import com.ibrahim.quranapp.R
+import com.ibrahim.quranapp.adapter.HomeAdapter
+import com.ibrahim.quranapp.data.QuranData
 import com.ibrahim.quranapp.network.QuranApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,16 +22,27 @@ import retrofit2.Response
 
 class HomeFragment : Fragment() , HomeAdapter.OnItemClickListener {
 
+    private lateinit var  viewModel: HomeViewModel
+
     var quranData: List<QuranData>? = null
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
     var testTextView: TextView? = null
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        Log.i("homefragment" , "from fragment")
+//        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+//
+//        viewModel.quranData.observe(viewLifecycleOwner , Observer { quranList ->
+//
+//        })
+
+
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,24 +79,13 @@ class HomeFragment : Fragment() , HomeAdapter.OnItemClickListener {
         })
     }
 
-    //init some data
-    fun getFakeData(): List<QuranData> = listOf(
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-        QuranData(0, "مشاري بن راشد", "", "حفص عن عاصم"),
-
-        )
-
+    @SuppressLint("ResourceType")
     override fun onItemClick(position: Int) {
         Toast.makeText(context , "hello : $position" , Toast.LENGTH_SHORT).show()
+        val filesFragment = FilesFragment()
+
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()
+
     }
 }

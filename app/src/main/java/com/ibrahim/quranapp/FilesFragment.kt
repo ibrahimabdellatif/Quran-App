@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.Adapters.FilesAdapter
-import com.ibrahim.quranapp.Data.SurahData
+import com.ibrahim.quranapp.adapter.FilesAdapter
+import com.ibrahim.quranapp.data.Data
+import com.ibrahim.quranapp.data.SurahData
 import com.ibrahim.quranapp.network.SurahApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class FilesFragment : Fragment() {
-
+    var testTextView: TextView? = null
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
     var surahData: List<SurahData>? = null
+    var data: List<Data>? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,32 +32,51 @@ class FilesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        testTextView = view.findViewById(R.id.tv_test)
+        initRetrofit(view)
+//        surahRecyclerView(view , getFakeData())
     }
 
-    fun initRetrofit(view: View) {
-        SurahApi.retrofitService.getSurahData().enqueue(object : Callback<List<SurahData>> {
-            override fun onResponse(
-                call: Call<List<SurahData>>,
-                response: Response<List<SurahData>>
-            ) {
-                surahData = response.body()!!
-                surahRecyclerView(view , surahData!!)
-            }
-
-            override fun onFailure(call: Call<List<SurahData>>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
-    }
-
-    fun surahRecyclerView(view: View , surahData : List<SurahData>) {
+    fun surahRecyclerView(view: View, surahData: List<SurahData>) {
         recyclerView = view.findViewById(R.id.rv_files)
         layoutManager = LinearLayoutManager(activity)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = layoutManager
         recyclerView?.adapter = FilesAdapter(surahData)
     }
+
+    fun initRetrofit(view: View) {
+        SurahApi.retrofitService.getSurahData().enqueue(object : Callback<Data> {
+            override fun onResponse(
+                call: Call<Data>,
+                response: Response<Data>
+            ) {
+                var newData = response
+                newData.body()?.let { surahRecyclerView(view, it.data) }
+                testTextView?.visibility = View.GONE
+            }
+
+            override fun onFailure(call: Call<Data>, t: Throwable) {
+                testTextView?.visibility = View.VISIBLE
+                testTextView?.text = "this is failure state " + t.message
+            }
+
+        })
+
+    }
+
+    fun getFakeData(): List<SurahData> = listOf(
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
+        SurahData(0, "سورة البقرة", "albaqarh", "maccan")
+
+
+    )
+
 
 }

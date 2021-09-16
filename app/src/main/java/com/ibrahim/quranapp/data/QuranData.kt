@@ -1,4 +1,4 @@
-package com.ibrahim.quranapp.Data
+package com.ibrahim.quranapp.data
 
 data class QuranData(
 //    @SerializedName("id")

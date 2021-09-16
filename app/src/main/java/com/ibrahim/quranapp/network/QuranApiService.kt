@@ -1,6 +1,6 @@
 package com.ibrahim.quranapp.network
 
-import com.ibrahim.quranapp.Data.QuranData
+import com.ibrahim.quranapp.data.QuranData
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
