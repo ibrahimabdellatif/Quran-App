@@ -21,5 +21,4 @@ data class QuranData(
 
 //    @SerializedName("suras")
     var suras: String="",
-    var surasList: List<String> = listOf(suras)
 )

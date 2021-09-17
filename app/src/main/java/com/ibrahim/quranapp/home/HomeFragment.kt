@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ibrahim.quranapp.FilesFragment
+import com.ibrahim.quranapp.PlayerFragment
 import com.ibrahim.quranapp.R
 import com.ibrahim.quranapp.adapter.HomeAdapter
 import com.ibrahim.quranapp.data.QuranData
@@ -85,11 +86,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
             .show()
 
         val filesFragment = FilesFragment()
+        val bundleFiles = Bundle()
+        bundleFiles.putString("server", quranData?.get(position)?.Server)
+       // bundleFiles.putString("suras" , quranData?.get(position)?.suras)
+        bundleFiles.putString("readerName" , quranData?.get(position)?.name)
+        bundleFiles.putString("rewaya" , quranData?.get(position)?.rewaya)
+        filesFragment.arguments = bundleFiles
 
-        val bundle = Bundle()
-        bundle.putString("server", quranData?.get(position)?.Server)
-        bundle.putString("suras" , quranData?.get(position)?.surasList?.get(position))
-        filesFragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()
 

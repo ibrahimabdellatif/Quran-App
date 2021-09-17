@@ -1,10 +1,8 @@
 package com.ibrahim.quranapp
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.ibrahim.quranapp.adapter.FilesAdapter
 import com.ibrahim.quranapp.data.Data
 import com.ibrahim.quranapp.data.SurahData
@@ -28,8 +25,13 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
     var data: List<Data>? = null
-    var bundleServerValue: String? = null
-    var bundleSurasValues:String?=null
+    var bundleServer: String? = null
+
+    //    var bundleSurasValues:String?=null
+    var bundleReaderName: String? = null
+    var bundleRewaya: String? = null
+    var url = ""
+    var surahDataList: List<SurahData>? = null
 
     //private var uri:Uri? =null //Uri.parse("https://server8.mp3quran.net/ahmad_huth/001.mp3")
     override fun onCreateView(
@@ -39,8 +41,10 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_files, container, false)
 
-        bundleServerValue = arguments?.getString("server")
-        bundleSurasValues = arguments?.getString("suras")
+        bundleServer = arguments?.getString("server")
+        bundleReaderName = arguments?.getString("readerName")
+        bundleRewaya = arguments?.getString("rewaya")
+//        bundleSurasValues = arguments?.getString("suras")
         return view
     }
 
@@ -66,7 +70,10 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
                 response: Response<Data>
             ) {
                 var newData = response
-                newData.body()?.let { surahRecyclerView(view, it.data) }
+                newData.body()?.let {
+                    surahDataList = it.data
+                    surahRecyclerView(view, surahDataList!!)
+                }
                 testTextView?.visibility = View.GONE
             }
 
@@ -84,39 +91,33 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         super.onItemClick(position)
 
         //
-        var testUrl = ""
         if (position + 1 in 1..9) {
-            testUrl = "$bundleServerValue/00${position + 1}.mp3"
+            url = "$bundleServer/00${position + 1}.mp3"
         } else if (position + 1 in 10..99) {
-            testUrl = "$bundleServerValue/0${position + 1}.mp3"
+            url = "$bundleServer/0${position + 1}.mp3"
         } else {
-            testUrl = "$bundleServerValue/${position + 1}.mp3"
+            url = "$bundleServer/${position + 1}.mp3"
         }
 
-        var uri = Uri.parse(testUrl)
-        mediaPlayer(uri)
+
+        //bundle url to player fragment
+        val playerFragment = PlayerFragment()
+        val bundle = Bundle()
+
+        bundle.putString("url", url)
+        bundle.putString("readerName", bundleReaderName)
+        bundle.putString("rewaya", bundleRewaya)
+        bundle.putString("surahName", surahDataList?.get(position)?.name)
+
+        playerFragment.arguments = bundle
+
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.replace(R.id.nav_host_fragment, playerFragment)?.commit()
+
         //var char : MutableList<Char>? = bundleSurasValues?.toMutableList()
-        Toast.makeText(context, "${uri}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "${url}", Toast.LENGTH_SHORT).show()
 
     }
-
-    fun mediaPlayer(uri: Uri) {
-        var uri = uri
-        val mediaPlayer = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-
-            context?.let { setDataSource(it, uri) }
-            prepare()
-            start()
-        }
-        mediaPlayer.start()
-    }
-
 
 
     fun getFakeData(): List<SurahData> = listOf(
