@@ -3,16 +3,18 @@ package com.ibrahim.quranapp
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.ibrahim.quranapp.adapter.FilesAdapter
 import com.ibrahim.quranapp.data.Data
 import com.ibrahim.quranapp.data.SurahData
@@ -26,7 +28,8 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
     var data: List<Data>? = null
-    var serverValue: String? = null
+    var bundleServerValue: String? = null
+    var bundleSurasValues:String?=null
 
     //private var uri:Uri? =null //Uri.parse("https://server8.mp3quran.net/ahmad_huth/001.mp3")
     override fun onCreateView(
@@ -36,9 +39,8 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_files, container, false)
 
-        serverValue = arguments?.getString("server")
-        Log.i("on file fragment ", serverValue.toString())
-
+        bundleServerValue = arguments?.getString("server")
+        bundleSurasValues = arguments?.getString("suras")
         return view
     }
 
@@ -77,23 +79,24 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
 
         //
         var testUrl = ""
         if (position + 1 in 1..9) {
-            testUrl = "$serverValue/00${position + 1}.mp3"
+            testUrl = "$bundleServerValue/00${position + 1}.mp3"
         } else if (position + 1 in 10..99) {
-            testUrl = "$serverValue/0${position + 1}.mp3"
+            testUrl = "$bundleServerValue/0${position + 1}.mp3"
         } else {
-            testUrl = "$serverValue/${position + 1}.mp3"
+            testUrl = "$bundleServerValue/${position + 1}.mp3"
         }
 
         var uri = Uri.parse(testUrl)
         mediaPlayer(uri)
-        Toast.makeText(context, "${position + 1}", Toast.LENGTH_SHORT).show()
-
+        //var char : MutableList<Char>? = bundleSurasValues?.toMutableList()
+        Toast.makeText(context, "${uri}", Toast.LENGTH_SHORT).show()
 
     }
 
@@ -113,6 +116,8 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         }
         mediaPlayer.start()
     }
+
+
 
     fun getFakeData(): List<SurahData> = listOf(
         SurahData(0, "سورة البقرة", "albaqarh", "maccan"),

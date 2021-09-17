@@ -88,6 +88,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
 
         val bundle = Bundle()
         bundle.putString("server", quranData?.get(position)?.Server)
+        bundle.putString("suras" , quranData?.get(position)?.surasList?.get(position))
         filesFragment.arguments = bundle
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()
