@@ -1,4 +1,4 @@
-package com.ibrahim.quranapp
+package com.ibrahim.quranapp.player
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.ibrahim.quranapp.R
 
 class PlayerFragment : Fragment() {
 

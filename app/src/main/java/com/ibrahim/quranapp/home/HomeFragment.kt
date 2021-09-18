@@ -11,8 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.FilesFragment
-import com.ibrahim.quranapp.PlayerFragment
+import com.ibrahim.quranapp.files.FilesFragment
 import com.ibrahim.quranapp.R
 import com.ibrahim.quranapp.adapter.HomeAdapter
 import com.ibrahim.quranapp.data.QuranData
@@ -96,5 +95,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()
 
+//        view?.findNavController()?.navigate(R.id.action_homeFragment_to_listFragment)
     }
 }
