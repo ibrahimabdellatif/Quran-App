@@ -5,7 +5,6 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,9 +26,9 @@ class PlayerFragment : Fragment() {
     var url = ""
     lateinit var runnable: Runnable
     private var handler = Handler()
+    private var currentPosition = 0
 
-    var nextValue = 0
-    var positionToFile = 0
+
     var title: TextView? = null
     var rewaya: TextView? = null
     var readerName: TextView? = null
@@ -39,29 +38,30 @@ class PlayerFragment : Fragment() {
     lateinit var pause: ImageButton
     lateinit var next: ImageButton
     lateinit var previous: ImageButton
+    var nextValue = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_player, container, false)
+
+
+        getBundles()
+        initUIElements(view)
+        serverLink()
+        mediaPlayer(url)
+        return view
+    }
+
+    fun getBundles() {
         // bundle form home fragment
         bundleServer = arguments?.getString("serverUrl").toString()
         bundleReaderName = arguments?.getString("readerName").toString()
         bundleRewaya = arguments?.getString("rewaya").toString()
-        var test = arguments?.getString("hello").toString()
         // bundle form file fragment
         bundleSurahName = arguments?.getString("surahName").toString()
         bundleNextSurahName = arguments?.getString("nextSurahName").toString()
         bundlePosition = arguments?.getInt("filePosition")!!
-
-
-        initUIElements(view)
-        serverLink()
-        mediaPlayer(url)
-        Log.i("player on create url", url)
-        Log.i("player on position", bundlePosition.toString())
-        Log.i("player on create url", url)
-        return view
     }
 
     fun serverLink() {
@@ -95,7 +95,6 @@ class PlayerFragment : Fragment() {
         var totalTime = timerLabel(mediaPlayer.duration)
         endTime?.text = totalTime
 
-
         mediaPlayer.start()
         pause.setOnClickListener {
             if (mediaPlayer.isPlaying) {
@@ -126,7 +125,7 @@ class PlayerFragment : Fragment() {
         })
 
         runnable = Runnable {
-            var currentPosition = mediaPlayer.currentPosition
+            currentPosition = mediaPlayer.currentPosition
             seekBar.progress = currentPosition
             startTime?.text = timerLabel(currentPosition)
             handler.postDelayed(runnable, 1000)
