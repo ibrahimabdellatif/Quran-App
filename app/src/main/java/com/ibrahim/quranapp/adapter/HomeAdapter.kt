@@ -40,7 +40,7 @@ class HomeAdapter(
         View.OnClickListener {
         val readerName: TextView = itemView.findViewById(R.id.tv_reader_name)
         val rewayaType: TextView = itemView.findViewById(R.id.tv_rewaya_type)
-        val firstLetter: TextView = itemView.findViewById(R.id.tv_first_letter)
+        //val firstLetter: TextView = itemView.findViewById(R.id.tv_first_letter)
 
         init {
             itemView.setOnClickListener(this)
@@ -55,7 +55,7 @@ class HomeAdapter(
         fun bind(item: QuranData) {
             readerName.text = item.name
             rewayaType.text = item.rewaya
-            firstLetter.text = item.letter
+            //firstLetter.text = item.letter
 //            firstLetter.text = item.Server
         }
 

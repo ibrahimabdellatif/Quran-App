@@ -1,6 +1,8 @@
 package com.ibrahim.quranapp.data
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class SurahData(
     //number of surah

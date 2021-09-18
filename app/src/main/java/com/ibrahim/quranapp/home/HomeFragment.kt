@@ -67,13 +67,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
                 call: Call<List<QuranData>>,
                 response: Response<List<QuranData>>
             ) {
-                testTextView?.text = response.body()?.size.toString()
+                //testTextView?.text = response.body()?.size.toString()
                 quranData = response.body()!!
                 recyclerView(view, quranData!!)
             }
 
             override fun onFailure(call: Call<List<QuranData>>, t: Throwable) {
-                testTextView?.text = "this is failure state " + t.message
+              //  testTextView?.text = "this is failure state " + t.message
             }
 
 
@@ -86,12 +86,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
             .show()
 
         val filesFragment = FilesFragment()
-        val bundleFiles = Bundle()
-        bundleFiles.putString("server", quranData?.get(position)?.Server)
-       // bundleFiles.putString("suras" , quranData?.get(position)?.suras)
-        bundleFiles.putString("readerName" , quranData?.get(position)?.name)
-        bundleFiles.putString("rewaya" , quranData?.get(position)?.rewaya)
-        filesFragment.arguments = bundleFiles
+
+        var bundlePlayer = Bundle()
+        bundlePlayer.putString("server", quranData?.get(position)?.Server)
+        bundlePlayer.putString("readerName" , quranData?.get(position)?.name)
+        bundlePlayer.putString("rewaya" , quranData?.get(position)?.rewaya)
+        filesFragment.arguments = bundlePlayer
 
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.nav_host_fragment, filesFragment)?.commit()

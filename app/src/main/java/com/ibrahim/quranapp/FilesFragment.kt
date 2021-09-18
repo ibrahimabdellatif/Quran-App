@@ -2,7 +2,6 @@ package com.ibrahim.quranapp
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,7 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var testTextView: TextView? = null
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
-    var data: List<Data>? = null
+
     var bundleServer: String? = null
 
     //    var bundleSurasValues:String?=null
@@ -32,6 +31,11 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var bundleRewaya: String? = null
     var url = ""
     var surahDataList: List<SurahData>? = null
+
+
+    //bundle url to player fragment
+    val playerFragment = PlayerFragment()
+    val bundle = Bundle()
 
     //private var uri:Uri? =null //Uri.parse("https://server8.mp3quran.net/ahmad_huth/001.mp3")
     override fun onCreateView(
@@ -44,16 +48,12 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         bundleServer = arguments?.getString("server")
         bundleReaderName = arguments?.getString("readerName")
         bundleRewaya = arguments?.getString("rewaya")
-//        bundleSurasValues = arguments?.getString("suras")
+        testTextView = view.findViewById(R.id.tv_test)
+
+        initRetrofit(view)
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        testTextView = view.findViewById(R.id.tv_test)
-        initRetrofit(view)
-//        surahRecyclerView(view , getFakeData())
-    }
 
     fun surahRecyclerView(view: View, surahData: List<SurahData>) {
         recyclerView = view.findViewById(R.id.rv_files)
@@ -90,48 +90,22 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
 
-        //
-        if (position + 1 in 1..9) {
-            url = "$bundleServer/00${position + 1}.mp3"
-        } else if (position + 1 in 10..99) {
-            url = "$bundleServer/0${position + 1}.mp3"
-        } else {
-            url = "$bundleServer/${position + 1}.mp3"
-        }
 
 
-        //bundle url to player fragment
-        val playerFragment = PlayerFragment()
-        val bundle = Bundle()
-
-        bundle.putString("url", url)
+        bundle.putString("serverUrl", bundleServer)
         bundle.putString("readerName", bundleReaderName)
         bundle.putString("rewaya", bundleRewaya)
         bundle.putString("surahName", surahDataList?.get(position)?.name)
+        bundle.putInt("filePosition", position + 1)
+
 
         playerFragment.arguments = bundle
 
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.nav_host_fragment, playerFragment)?.commit()
 
-        //var char : MutableList<Char>? = bundleSurasValues?.toMutableList()
         Toast.makeText(context, "${url}", Toast.LENGTH_SHORT).show()
 
     }
-
-
-    fun getFakeData(): List<SurahData> = listOf(
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan"),
-        SurahData(0, "سورة البقرة", "albaqarh", "maccan")
-
-
-    )
-
 
 }

@@ -9,42 +9,69 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class PlayerFragment : Fragment() {
 
-    var bundleUri = ""
+    var bundleServer = ""
     var bundleReaderName = ""
-    var bundleSurahName = ""
     var bundleRewaya = ""
+
+    var bundleSurahName = ""
+    var bundleNextSurahName = ""
+    var bundlePosition = 0
+
+    var url = ""
     lateinit var runnable: Runnable
     private var handler = Handler()
-    var mediaValue :Int = 0
 
-     var title:TextView?=null
-     var rewaya :TextView?=null
-     var readerName :TextView?=null
+    var nextValue = 0
+    var positionToFile = 0
+    var title: TextView? = null
+    var rewaya: TextView? = null
+    var readerName: TextView? = null
+    var startTime: TextView? = null
+    var endTime: TextView? = null
     lateinit var seekBar: SeekBar
-    lateinit var pause :Button
-    lateinit var next :Button
-    lateinit var previous :Button
+    lateinit var pause: Button
+    lateinit var next: Button
+    lateinit var previous: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_player, container, false)
-        bundleUri = arguments?.getString("url").toString()
-        bundleSurahName = arguments?.getString("surahName").toString()
+        // bundle form home fragment
+        bundleServer = arguments?.getString("serverUrl").toString()
         bundleReaderName = arguments?.getString("readerName").toString()
         bundleRewaya = arguments?.getString("rewaya").toString()
+        var test = arguments?.getString("hello").toString()
+        // bundle form file fragment
+        bundleSurahName = arguments?.getString("surahName").toString()
+        bundleNextSurahName = arguments?.getString("nextSurahName").toString()
+        bundlePosition = arguments?.getInt("filePosition")!!
 
-        Log.i("onview" , bundleUri)
 
         initUIElements(view)
-        mediaPlayer(bundleUri)
-
+        serverLink()
+        mediaPlayer(url)
+        Log.i("player on create url", url)
+        Log.i("player on position", bundlePosition.toString())
+        Log.i("player on create url", url)
         return view
+    }
+
+    fun serverLink() {
+        if (bundlePosition + 1 in 1..9) {
+            url = "$bundleServer/00${bundlePosition + nextValue}.mp3"
+        } else if (bundlePosition + 1 in 10..99) {
+            url = "$bundleServer/0${bundlePosition + nextValue}.mp3"
+        } else {
+            url = "$bundleServer/${bundlePosition + nextValue}.mp3"
+        }
     }
 
     fun mediaPlayer(url: String) {
@@ -65,20 +92,24 @@ class PlayerFragment : Fragment() {
         seekBar.progress = 0
         seekBar.max = mediaPlayer.duration
 
+        var totalTime = timerLabel(mediaPlayer.duration)
+        endTime?.text = totalTime
+
+
         mediaPlayer.start()
         pause.setOnClickListener {
-            if (mediaPlayer.isPlaying){
+            if (mediaPlayer.isPlaying) {
                 mediaPlayer.pause()
-            }else{
+            } else {
                 mediaPlayer.start()
             }
         }
 
         //to change seekBar position while file is playing we need to runnable object and handler
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, position: Int, changed: Boolean) {
                 //now if seekBar position is changed the mp3 file will go to this position
-                if (changed){
+                if (changed) {
                     mediaPlayer.seekTo(position)
                 }
             }
@@ -93,32 +124,36 @@ class PlayerFragment : Fragment() {
         })
 
         runnable = Runnable {
-            seekBar.progress = mediaPlayer.currentPosition
-            handler.postDelayed(runnable , 1000)
+            var currentPosition = mediaPlayer.currentPosition
+            seekBar.progress = currentPosition
+            startTime?.text = timerLabel(currentPosition)
+            handler.postDelayed(runnable, 1000)
         }
-        handler.postDelayed(runnable , 1000)
+        handler.postDelayed(runnable, 1000)
         mediaPlayer.setOnCompletionListener {
             seekBar.progress = 0
         }
 
 
         next.setOnClickListener {
+            mediaPlayer.stop()
             nextMedia()
-            mediaPlayer.pause()
-            Log.i("test" , bundleUri)
-            mediaPlayer.start()
         }
-//
-//        previous.setOnClickListener {
-//            mediaPlayer.
-//        }
+
+        previous.setOnClickListener {
+            mediaPlayer.stop()
+            previousMedia()
+
+        }
 
     }
 
-    fun initUIElements(view: View){
+    fun initUIElements(view: View) {
         title = view.findViewById(R.id.tv_title)
         rewaya = view.findViewById(R.id.tv_rewaya_name_mp)
         readerName = view.findViewById(R.id.tv_reader_name_mp)
+        startTime = view.findViewById(R.id.tv_start_time)
+        endTime = view.findViewById(R.id.tv_end_time)
         seekBar = view.findViewById(R.id.seek_bar)
         pause = view.findViewById(R.id.btn_pause)
         next = view.findViewById(R.id.btn_next)
@@ -130,14 +165,35 @@ class PlayerFragment : Fragment() {
         rewaya?.text = bundleRewaya
     }
 
-    fun nextMedia(){
-        var fileFragment = FilesFragment()
-        var bundleNext = Bundle()
-        mediaValue++
-        bundleNext.putInt("next" ,mediaValue)
-        fileFragment.arguments = bundleNext
-    }
-    fun previousMedia(){
+    fun nextMedia() {
+        if (bundlePosition + nextValue < 114) nextValue++
 
+        serverLink()
+        mediaPlayer(url)
+
+
+        title?.text = ""
+        readerName?.text = bundleReaderName
+        rewaya?.text = bundleRewaya
     }
+
+    fun previousMedia() {
+        if (bundlePosition + nextValue > 1) nextValue--
+
+        serverLink()
+        mediaPlayer(url)
+    }
+
+    fun timerLabel(duration: Int): String {
+        var timerLable = ""
+        var min = duration / 1000 / 60
+        var sec = duration / 1000 % 60
+
+        timerLable += "$min:"
+        if (sec < 10) timerLable += "0"
+        timerLable += sec
+
+        return timerLable
+    }
+
 }

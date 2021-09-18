@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:elevation="12dp"
+    app:cardCornerRadius="12dp"
+    android:layout_marginBottom="8dp"
+    android:layout_width="match_parent">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:layout_marginBottom="8dp">
+    android:padding="8dp"
+    android:background="#F3F2C9">
 
     <TextView
         android:id="@+id/tv_reader_name"
@@ -15,8 +24,8 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:text="مشاري بن راشد"
-        android:textColor="@color/black"
-        android:textSize="25dp"
+        android:textColor="#003638"
+        android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -26,23 +35,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="13dp"
-        android:layout_marginBottom="7dp"
         android:text="حفص عن عاصم"
-        android:textSize="18dp"
+        android:textSize="15dp"
+        android:textColor="#055052"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/tv_first_letter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="أ"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_reader_name"
-        app:layout_constraintStart_toEndOf="@+id/tv_rewaya_type"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
