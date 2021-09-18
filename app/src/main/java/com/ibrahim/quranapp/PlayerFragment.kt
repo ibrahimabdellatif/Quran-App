@@ -9,7 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -36,9 +36,9 @@ class PlayerFragment : Fragment() {
     var startTime: TextView? = null
     var endTime: TextView? = null
     lateinit var seekBar: SeekBar
-    lateinit var pause: Button
-    lateinit var next: Button
-    lateinit var previous: Button
+    lateinit var pause: ImageButton
+    lateinit var next: ImageButton
+    lateinit var previous: ImageButton
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,7 +100,9 @@ class PlayerFragment : Fragment() {
         pause.setOnClickListener {
             if (mediaPlayer.isPlaying) {
                 mediaPlayer.pause()
+                pause.setImageResource(R.drawable.ic_play_arrow_24)
             } else {
+                pause.setImageResource(R.drawable.ic_pause_24)
                 mediaPlayer.start()
             }
         }
@@ -159,6 +161,9 @@ class PlayerFragment : Fragment() {
         next = view.findViewById(R.id.btn_next)
         previous = view.findViewById(R.id.btn_previous)
 
+        pause.setImageResource(R.drawable.ic_pause_24)
+        next.setImageResource(R.drawable.ic_skip_next_24)
+        previous.setImageResource(R.drawable.ic_skip_previous_24)
 
         title?.text = bundleSurahName
         readerName?.text = bundleReaderName

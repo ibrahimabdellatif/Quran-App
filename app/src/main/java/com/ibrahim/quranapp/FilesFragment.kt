@@ -20,7 +20,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
-    var testTextView: TextView? = null
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
 
@@ -48,7 +47,7 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         bundleServer = arguments?.getString("server")
         bundleReaderName = arguments?.getString("readerName")
         bundleRewaya = arguments?.getString("rewaya")
-        testTextView = view.findViewById(R.id.tv_test)
+//        testTextView = view.findViewById(R.id.tv_test)
 
         initRetrofit(view)
         return view
@@ -74,12 +73,12 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
                     surahDataList = it.data
                     surahRecyclerView(view, surahDataList!!)
                 }
-                testTextView?.visibility = View.GONE
+//                testTextView?.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<Data>, t: Throwable) {
-                testTextView?.visibility = View.VISIBLE
-                testTextView?.text = "this is failure state " + t.message
+//                testTextView?.visibility = View.VISIBLE
+//                testTextView?.text = "this is failure state " + t.message
             }
 
         })

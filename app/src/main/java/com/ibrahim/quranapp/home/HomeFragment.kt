@@ -47,7 +47,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        testTextView = view.findViewById(R.id.tv_test)
+//        testTextView = view.findViewById(R.id.tv_test)
         initRetrofit(view)
     }
 
