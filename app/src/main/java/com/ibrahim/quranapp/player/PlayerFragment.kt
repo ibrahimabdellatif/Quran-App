@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,14 +48,16 @@ class PlayerFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_player, container, false)
 
 
-        getBundles()
+        getDataFromFileFragment()
         initUIElements(view)
         serverLink()
+        logs()
+
         mediaPlayer(url)
         return view
     }
 
-    fun getBundles() {
+    fun getDataFromFileFragment() {
         // bundle form home fragment
         bundleServer = arguments?.getString("serverUrl").toString()
         bundleReaderName = arguments?.getString("readerName").toString()
@@ -199,6 +202,15 @@ class PlayerFragment : Fragment() {
         timerLable += sec
 
         return timerLable
+    }
+
+    private fun logs() {
+        Log.i("url", url)
+        Log.i("server bundle", bundleServer)
+        Log.i("server bundle", bundleNextSurahName)
+        Log.i("reader bundle", bundleReaderName)
+        Log.i("rewaya bundle", bundleRewaya)
+        Log.i("surah name bundle", bundleSurahName)
     }
 
 }

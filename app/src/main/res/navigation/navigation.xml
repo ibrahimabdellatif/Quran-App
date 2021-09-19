@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navHomeFragment"
         android:name="com.ibrahim.quranapp.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/home_fragment_labal"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_listFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.ibrahim.quranapp.files.FilesFragment"
-        android:label="fragment_list"
+        android:label="القرآن الكريم"
         tools:layout="@layout/fragment_files" >
         <action
             android:id="@+id/action_listFragment_to_playerFragment"
@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/playerFragment"
         android:name="com.ibrahim.quranapp.player.PlayerFragment"
-        android:label="fragment_player"
+        android:label="المشغل"
         tools:layout="@layout/fragment_player" >
         <action
             android:id="@+id/action_playerFragment_to_listFragment"

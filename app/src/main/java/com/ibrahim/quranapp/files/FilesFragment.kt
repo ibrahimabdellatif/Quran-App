@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.player.PlayerFragment
 import com.ibrahim.quranapp.R
 import com.ibrahim.quranapp.adapter.FilesAdapter
 import com.ibrahim.quranapp.data.Data
 import com.ibrahim.quranapp.data.SurahData
 import com.ibrahim.quranapp.network.SurahApi
+import com.ibrahim.quranapp.player.PlayerFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,19 +27,12 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var layoutManager: RecyclerView.LayoutManager? = null
 
     var bundleServer: String? = null
-
-    //    var bundleSurasValues:String?=null
     var bundleReaderName: String? = null
     var bundleRewaya: String? = null
-    var url = ""
+
     var surahDataList: List<SurahData>? = null
 
 
-    //bundle url to player fragment
-    val playerFragment = PlayerFragment()
-    val bundle = Bundle()
-
-    //private var uri:Uri? =null //Uri.parse("https://server8.mp3quran.net/ahmad_huth/001.mp3")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,11 +40,8 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_files, container, false)
 
-        bundleServer = arguments?.getString("server")
-        bundleReaderName = arguments?.getString("readerName")
-        bundleRewaya = arguments?.getString("rewaya")
-//        testTextView = view.findViewById(R.id.tv_test)
 
+        getDataFromHomeFragment()
         initRetrofit(view)
         return view
     }
@@ -86,27 +78,29 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
 
     }
 
+    fun getDataFromHomeFragment(){
+        bundleServer = arguments?.getString("server")
+        bundleReaderName = arguments?.getString("readerName")
+        bundleRewaya = arguments?.getString("rewaya")
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
 
+        var surahName = surahDataList?.get(position)?.name
 
+        val navController = view?.findNavController()
+        navController?.navigate(
+            R.id.action_listFragment_to_playerFragment, bundleOf(
+                "serverUrl" to bundleServer,
+                "readerName" to bundleReaderName,
+                "rewaya" to bundleRewaya,
+                "surahName" to surahName,
+                "filePosition" to position + 1
+            )
+        )
 
-        bundle.putString("serverUrl", bundleServer)
-        bundle.putString("readerName", bundleReaderName)
-        bundle.putString("rewaya", bundleRewaya)
-        bundle.putString("surahName", surahDataList?.get(position)?.name)
-        bundle.putInt("filePosition", position + 1)
-
-
-        playerFragment.arguments = bundle
-
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.nav_host_fragment, playerFragment)?.commit()
-
-
-
-        Toast.makeText(context, "${url}", Toast.LENGTH_SHORT).show()
 
     }
 
