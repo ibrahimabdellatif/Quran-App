@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ibrahim.quranapp.R
@@ -17,7 +16,6 @@ import com.ibrahim.quranapp.adapter.FilesAdapter
 import com.ibrahim.quranapp.data.Data
 import com.ibrahim.quranapp.data.SurahData
 import com.ibrahim.quranapp.network.SurahApi
-import com.ibrahim.quranapp.player.PlayerFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,9 +24,9 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var recyclerView: RecyclerView? = null
     var layoutManager: RecyclerView.LayoutManager? = null
 
-    var bundleServer: String? = null
-    var bundleReaderName: String? = null
-    var bundleRewaya: String? = null
+    var serverArgs: String? = null
+    var readerNameArgs: String? = null
+    var rewayaArgs: String? = null
 
     var surahDataList: List<SurahData>? = null
 
@@ -61,7 +59,7 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
                 call: Call<Data>,
                 response: Response<Data>
             ) {
-                var newData = response
+                val newData = response
                 newData.body()?.let {
                     surahDataList = it.data
                     surahRecyclerView(view, surahDataList!!)
@@ -78,30 +76,48 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
 
     }
 
-    fun getDataFromHomeFragment(){
-        bundleServer = arguments?.getString("server")
-        bundleReaderName = arguments?.getString("readerName")
-        bundleRewaya = arguments?.getString("rewaya")
+    fun getDataFromHomeFragment() {
+        //when use bundle
+//        bundleServer = arguments?.getString("server")
+//        bundleReaderName = arguments?.getString("readerName")
+//        bundleRewaya = arguments?.getString("rewaya")
+//
+        val args: FilesFragmentArgs by navArgs()
+        serverArgs = args.server
+        readerNameArgs = args.readerName
+        rewayaArgs = args.rewaya
+
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onItemClick(position: Int) {
         super.onItemClick(position)
 
-        var surahName = surahDataList?.get(position)?.name
+        val surahName = surahDataList?.get(position)?.name
 
-        val navController = view?.findNavController()
-        navController?.navigate(
-            R.id.action_listFragment_to_playerFragment, bundleOf(
-                "serverUrl" to bundleServer,
-                "readerName" to bundleReaderName,
-                "rewaya" to bundleRewaya,
-                "surahName" to surahName,
-                "filePosition" to position + 1
-            )
+        //when use  bundle
+//        val navController = view?.findNavController()
+//        navController?.navigate(
+//            R.id.action_listFragment_to_playerFragment, bundleOf(
+//                "serverUrl" to bundleServer,
+//                "readerName" to bundleReaderName,
+//                "rewaya" to bundleRewaya,
+//                "surahName" to surahName,
+//                "filePosition" to position + 1
+//            )
+//        )
+
+
+        val action = FilesFragmentDirections.actionListFragmentToPlayerFragment(
+            serverArgs,
+            readerNameArgs,
+            rewayaArgs,
+            surahName,
+            position + 1
         )
-
-
+        view?.findNavController()?.navigate(action)
     }
+
 
 }

@@ -13,23 +13,22 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.ibrahim.quranapp.R
 
 class PlayerFragment : Fragment() {
 
-    var bundleServer = ""
-    var bundleReaderName = ""
-    var bundleRewaya = ""
+    var serverArgs = ""
+    var readerNameArgs = ""
+    var rewayaArgs = ""
 
-    var bundleSurahName = ""
-    var bundleNextSurahName = ""
-    var bundlePosition = 0
+    var surahNameArgs = ""
+    var positionArgs = 0
 
     var url = ""
     lateinit var runnable: Runnable
     private var handler = Handler()
     private var currentPosition = 0
-
 
     var title: TextView? = null
     var rewaya: TextView? = null
@@ -58,23 +57,31 @@ class PlayerFragment : Fragment() {
     }
 
     fun getDataFromFileFragment() {
-        // bundle form home fragment
-        bundleServer = arguments?.getString("serverUrl").toString()
-        bundleReaderName = arguments?.getString("readerName").toString()
-        bundleRewaya = arguments?.getString("rewaya").toString()
-        // bundle form file fragment
-        bundleSurahName = arguments?.getString("surahName").toString()
-        bundleNextSurahName = arguments?.getString("nextSurahName").toString()
-        bundlePosition = arguments?.getInt("filePosition")!!
+        //when using bundle
+//        // bundle form home fragment
+//        bundleServer = arguments?.getString("serverUrl").toString()
+//        bundleReaderName = arguments?.getString("readerName").toString()
+//        bundleRewaya = arguments?.getString("rewaya").toString()
+//        // bundle form file fragment
+//        bundleSurahName = arguments?.getString("surahName").toString()
+//        bundlePosition = arguments?.getInt("filePosition")!!
+
+//        using safeArgs
+        val args: PlayerFragmentArgs by navArgs()
+        serverArgs = args.server.toString()
+        readerNameArgs = args.readerName.toString()
+        rewayaArgs = args.rewaya.toString()
+        surahNameArgs = args.surahName.toString()
+        positionArgs = args.position
     }
 
     fun serverLink() {
-        if (bundlePosition + 1 in 1..9) {
-            url = "$bundleServer/00${bundlePosition + nextValue}.mp3"
-        } else if (bundlePosition + 1 in 10..99) {
-            url = "$bundleServer/0${bundlePosition + nextValue}.mp3"
+        if (positionArgs + 1 in 1..9) {
+            url = "$serverArgs/00${positionArgs + nextValue}.mp3"
+        } else if (positionArgs + 1 in 10..99) {
+            url = "$serverArgs/0${positionArgs + nextValue}.mp3"
         } else {
-            url = "$bundleServer/${bundlePosition + nextValue}.mp3"
+            url = "$serverArgs/${positionArgs + nextValue}.mp3"
         }
     }
 
@@ -168,25 +175,25 @@ class PlayerFragment : Fragment() {
         next.setImageResource(R.drawable.ic_skip_next_24)
         previous.setImageResource(R.drawable.ic_skip_previous_24)
 
-        title?.text = bundleSurahName
-        readerName?.text = bundleReaderName
-        rewaya?.text = bundleRewaya
+        title?.text = surahNameArgs
+        readerName?.text = readerNameArgs
+        rewaya?.text = rewayaArgs
     }
 
     fun nextMedia() {
-        if (bundlePosition + nextValue < 114) nextValue++
+        if (positionArgs + nextValue < 114) nextValue++
 
         serverLink()
         mediaPlayer(url)
 
 
         title?.text = ""
-        readerName?.text = bundleReaderName
-        rewaya?.text = bundleRewaya
+        readerName?.text = readerNameArgs
+        rewaya?.text = rewayaArgs
     }
 
     fun previousMedia() {
-        if (bundlePosition + nextValue > 1) nextValue--
+        if (positionArgs + nextValue > 1) nextValue--
 
         serverLink()
         mediaPlayer(url)
@@ -194,8 +201,8 @@ class PlayerFragment : Fragment() {
 
     fun timerLabel(duration: Int): String {
         var timerLable = ""
-        var min = duration / 1000 / 60
-        var sec = duration / 1000 % 60
+        val min = duration / 1000 / 60
+        val sec = duration / 1000 % 60
 
         timerLable += "$min:"
         if (sec < 10) timerLable += "0"
@@ -206,11 +213,10 @@ class PlayerFragment : Fragment() {
 
     private fun logs() {
         Log.i("url", url)
-        Log.i("server bundle", bundleServer)
-        Log.i("server bundle", bundleNextSurahName)
-        Log.i("reader bundle", bundleReaderName)
-        Log.i("rewaya bundle", bundleRewaya)
-        Log.i("surah name bundle", bundleSurahName)
+        Log.i("server bundle", serverArgs)
+        Log.i("reader bundle", readerNameArgs)
+        Log.i("rewaya bundle", rewayaArgs)
+        Log.i("surah name bundle", surahNameArgs)
     }
 
 }

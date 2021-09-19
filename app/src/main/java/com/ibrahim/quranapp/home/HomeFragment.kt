@@ -13,11 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.files.FilesFragment
 import com.ibrahim.quranapp.R
 import com.ibrahim.quranapp.adapter.HomeAdapter
 import com.ibrahim.quranapp.data.QuranData
-import com.ibrahim.quranapp.files.FilesFragmentDirections
 import com.ibrahim.quranapp.network.QuranApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +39,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
 //        viewModel.quranData.observe(viewLifecycleOwner , Observer { quranList ->
 //
 //        })
-
 
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -75,7 +72,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
             }
 
             override fun onFailure(call: Call<List<QuranData>>, t: Throwable) {
-              //  testTextView?.text = "this is failure state " + t.message
+                //  testTextView?.text = "this is failure state " + t.message
             }
 
 
@@ -92,12 +89,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val readerName = quranData?.get(position)?.name
         val rewaya = quranData?.get(position)?.rewaya
 
+        //using saveArgs form navigation component to pass data between fragments
+        var action = HomeFragmentDirections.actionHomeFragmentToListFragment(server, readerName, rewaya)
+        view?.findNavController()?.navigate(action)
 
-            val navController = view?.findNavController()
-            navController?.navigate(R.id.action_homeFragment_to_listFragment , bundleOf(
-                "server" to server ,
-                "readerName" to readerName ,
-                "rewaya" to rewaya
-            ))
+
+        //when use bundle
+//        var navController = view?.findNavController()
+//        navController?.navigate(
+//            R.id.action_homeFragment_to_listFragment, bundleOf(
+//                "server" to server,
+//                "readerName" to readerName,
+//                "rewaya" to rewaya
+//            )
+//        )
+
     }
 }
