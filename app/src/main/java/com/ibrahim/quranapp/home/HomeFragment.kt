@@ -3,9 +3,7 @@ package com.ibrahim.quranapp.home
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -105,4 +103,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
 //        )
 
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        var inflater : MenuInflater = MenuInflater(context)
+//        inflater.inflate(R.menu.home_search_menu , menu)
+//
+//        var item : MenuItem = menu.findItem(R.id.home_search)
+//
+//        return
+//    }
 }
