@@ -1,5 +1,7 @@
 package com.ibrahim.quranapp.player
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
@@ -12,9 +14,17 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.navArgs
+import com.ibrahim.quranapp.MEDIA_CHANNEL_ID
+import com.ibrahim.quranapp.MainActivity
 import com.ibrahim.quranapp.R
+import com.ibrahim.quranapp.home.HomeFragment
+
+//import com.ibrahim.quranapp.App.
 
 class PlayerFragment : Fragment() {
 
@@ -24,6 +34,7 @@ class PlayerFragment : Fragment() {
 
     var surahNameArgs = ""
     var positionArgs = 0
+    val args: PlayerFragmentArgs by navArgs()
 
     var url = ""
     lateinit var runnable: Runnable
@@ -40,6 +51,8 @@ class PlayerFragment : Fragment() {
     lateinit var next: ImageButton
     lateinit var previous: ImageButton
     var nextValue = 0
+
+    private lateinit var notificationManager :NotificationManagerCompat
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,6 +63,9 @@ class PlayerFragment : Fragment() {
         getDataFromFileFragment()
         initUIElements(view)
         serverLink()
+
+        notificationManager = context?.let { NotificationManagerCompat.from(it) }!!
+
         logs()
 
         mediaPlayer(url)
@@ -67,7 +83,7 @@ class PlayerFragment : Fragment() {
 //        bundlePosition = arguments?.getInt("filePosition")!!
 
 //        using safeArgs
-        val args: PlayerFragmentArgs by navArgs()
+
         serverArgs = args.server.toString()
         readerNameArgs = args.readerName.toString()
         rewayaArgs = args.rewaya.toString()
@@ -86,6 +102,7 @@ class PlayerFragment : Fragment() {
     }
 
     fun mediaPlayer(url: String) {
+        showNotification()
         val uri = Uri.parse(url)
         val mediaPlayer = MediaPlayer().apply {
             setAudioAttributes(
@@ -210,6 +227,45 @@ class PlayerFragment : Fragment() {
 
         return timerLable
     }
+
+    fun showNotification(){
+
+        val pendingIntent = context?.let { NavDeepLinkBuilder(it)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.navigation)
+            .setDestination(R.id.playerFragment)
+//            .setArguments(arguments)
+            .createPendingIntent()
+                }
+
+
+        var notification = context?.let { NotificationCompat.Builder(it, MEDIA_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_music_note_24)
+            .setContentTitle(surahNameArgs)
+            .setContentText(readerNameArgs)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
+//            .setCategory(NotificationCompat.EXTRA_MEDIA_SESSION)
+            .setContentIntent(pendingIntent)
+            .build()}
+        if (notification != null) {
+            notificationManager.notify(1 , notification)
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private fun logs() {
         Log.i("url", url)
