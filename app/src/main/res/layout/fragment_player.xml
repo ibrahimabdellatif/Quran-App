@@ -52,75 +52,85 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <SeekBar
-        android:id="@+id/seek_bar"
-        style="@style/MySeekBar"
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/exo_player_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="50dp"
-        android:progress="50"
-        android:scaleY="2"
+        android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_reader_name_mp"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/tv_start_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="00:00"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/seek_bar"
-        app:layout_constraintEnd_toStartOf="@+id/seek_bar"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        tools:ignore="MissingConstraints" />
+    <!--    <SeekBar-->
+    <!--        android:id="@+id/seek_bar"-->
+    <!--        style="@style/MySeekBar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="40dp"-->
+    <!--        android:layout_marginRight="40dp"-->
+    <!--        android:layout_marginBottom="50dp"-->
+    <!--        android:progress="50"-->
+    <!--        android:scaleY="2"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/tv_reader_name_mp"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
-    <TextView
-        android:id="@+id/tv_end_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="01:22"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/seek_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_start_time"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="00:00"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/seek_bar"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/seek_bar"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/imageView"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
-    <ImageButton
-        android:id="@+id/btn_pause"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:backgroundTint="#055052"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seek_bar"
-        tools:ignore="MissingConstraints" />
+    <!--    <TextView-->
+    <!--        android:id="@+id/tv_end_time"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="01:22"-->
+    <!--        android:textColor="@color/white"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/seek_bar"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
-    <ImageButton
-        android:id="@+id/btn_next"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:backgroundTint="#055052"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_pause"
-        app:layout_constraintTop_toBottomOf="@+id/seek_bar"
-        tools:ignore="MissingConstraints" />
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/btn_pause"-->
+    <!--        android:layout_width="50dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:backgroundTint="#055052"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/seek_bar"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
-    <ImageButton
-        android:id="@+id/btn_previous"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:backgroundTint="#055052"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_pause"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seek_bar"
-        tools:ignore="MissingConstraints" />
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/btn_next"-->
+    <!--        android:layout_width="50dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:backgroundTint="#055052"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@id/btn_pause"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/seek_bar"-->
+    <!--        tools:ignore="MissingConstraints" />-->
+
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/btn_previous"-->
+    <!--        android:layout_width="50dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:backgroundTint="#055052"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/btn_pause"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/seek_bar"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
