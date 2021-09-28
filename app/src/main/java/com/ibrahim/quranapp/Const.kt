@@ -1,3 +1,4 @@
 package com.ibrahim.quranapp
 
-public val MEDIA_CHANNEL_ID :String= "mediaChannel"
+val MEDIA_CHANNEL_ID :String= "mediaChannel"
+val PLAYBACK_CHANNEL_ID : String = "playback channel id"

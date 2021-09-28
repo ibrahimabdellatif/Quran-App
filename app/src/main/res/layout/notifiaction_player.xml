@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="14dp">
+
+        <TextView
+            android:id="@+id/tv_surah_name_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            android:text="surah name"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/tv_reader_name_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            android:text="reader name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_surah_name_notify"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="150dp"
+            android:orientation="horizontal"
+            android:paddingRight="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
+
+            <Button
+                android:id="@+id/btn_previous_notify"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/ic_skip_previous_24" />
+
+            <Button
+                android:id="@+id/btn_play_notify"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/ic_play_arrow_24"
+                android:visibility="gone"/>
+            <Button
+                android:id="@+id/btn_pause_notify"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="22dp"
+                android:background="@drawable/ic_pause_24" />
+
+            <Button
+                android:id="@+id/btn_next_notify"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_skip_next_24" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

@@ -1,6 +1,5 @@
 package com.ibrahim.quranapp.player
 
-import android.app.PendingIntent
 import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
@@ -19,10 +18,11 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.navArgs
+import com.google.android.exoplayer2.util.Util
 import com.ibrahim.quranapp.MEDIA_CHANNEL_ID
 import com.ibrahim.quranapp.MainActivity
+import com.ibrahim.quranapp.QuranPlayerService
 import com.ibrahim.quranapp.R
-import com.ibrahim.quranapp.home.HomeFragment
 
 //import com.ibrahim.quranapp.App.
 
@@ -52,7 +52,7 @@ class PlayerFragment : Fragment() {
     lateinit var previous: ImageButton
     var nextValue = 0
 
-    private lateinit var notificationManager :NotificationManagerCompat
+    private lateinit var notificationManager: NotificationManagerCompat
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,11 +64,16 @@ class PlayerFragment : Fragment() {
         initUIElements(view)
         serverLink()
 
-        notificationManager = context?.let { NotificationManagerCompat.from(it) }!!
+
+        var intent = Intent(context , QuranPlayerService::class.java)
+        intent.putExtra("theurl" , url)
+        intent.putExtra("thesurahname" , surahNameArgs)
+        intent.putExtra("thereadername" , readerNameArgs)
+        context?.let { Util.startForegroundService(it, intent) }
 
         logs()
 
-        mediaPlayer(url)
+//        mediaPlayer(url)
         return view
     }
 
@@ -228,43 +233,32 @@ class PlayerFragment : Fragment() {
         return timerLable
     }
 
-    fun showNotification(){
+    fun showNotification() {
 
-        val pendingIntent = context?.let { NavDeepLinkBuilder(it)
-            .setComponentName(MainActivity::class.java)
-            .setGraph(R.navigation.navigation)
-            .setDestination(R.id.playerFragment)
+        val pendingIntent = context?.let {
+            NavDeepLinkBuilder(it)
+                .setComponentName(MainActivity::class.java)
+                .setGraph(R.navigation.navigation)
+                .setDestination(R.id.playerFragment)
 //            .setArguments(arguments)
-            .createPendingIntent()
-                }
+                .createPendingIntent()
+        }
 
 
-        var notification = context?.let { NotificationCompat.Builder(it, MEDIA_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_music_note_24)
-            .setContentTitle(surahNameArgs)
-            .setContentText(readerNameArgs)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
+        var notification = context?.let {
+            NotificationCompat.Builder(it, MEDIA_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_music_note_24)
+                .setContentTitle(surahNameArgs)
+                .setContentText(readerNameArgs)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
 //            .setCategory(NotificationCompat.EXTRA_MEDIA_SESSION)
-            .setContentIntent(pendingIntent)
-            .build()}
+                .setContentIntent(pendingIntent)
+                .build()
+        }
         if (notification != null) {
-            notificationManager.notify(1 , notification)
+            notificationManager.notify(1, notification)
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     private fun logs() {

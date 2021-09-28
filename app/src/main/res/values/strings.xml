@@ -3,4 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home_fragment_labal">الْقُرَّاء</string>
+    <string name="PLAYBACK_NOTIFICATION_NAME">notification name</string>
+    <string name="PLAYBACK_NOTIFICATION_ID">notification id</string>
 </resources>
