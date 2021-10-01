@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ibrahim.quranapp.data.QuranData
 import com.ibrahim.quranapp.R
+import com.ibrahim.quranapp.data.QuranData
 
 class HomeAdapter(
     private val quranData: List<QuranData>,
@@ -47,7 +47,7 @@ class HomeAdapter(
         }
 
         override fun onClick(v: View?) {
-            val position:Int = adapterPosition
+            val position: Int = adapterPosition
             listener.onItemClick(position)
         }
 
@@ -58,7 +58,6 @@ class HomeAdapter(
             //firstLetter.text = item.letter
 //            firstLetter.text = item.Server
         }
-
 
 
     }

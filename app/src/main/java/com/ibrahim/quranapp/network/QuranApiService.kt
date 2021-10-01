@@ -28,7 +28,7 @@ private val retrofit = Retrofit
  */
 interface QuranApiService {
     @GET("api/reciters/")
-     fun getData(): Call<List<QuranData>>
+    fun getData(): Call<List<QuranData>>
 }
 
 object QuranApi {

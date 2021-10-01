@@ -1,4 +1,4 @@
-package com.ibrahim.quranapp
+package com.ibrahim.quranapp.service
 
 import android.annotation.SuppressLint
 import android.app.Notification
@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Binder
 import android.os.IBinder
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -13,6 +14,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import com.ibrahim.quranapp.*
 import com.ibrahim.quranapp.player.PlayerFragment
 
 class QuranPlayerService : Service() {
@@ -25,9 +27,7 @@ class QuranPlayerService : Service() {
     var notifyTitle = ""
     var notifyDescription = ""
     var mediaItem: MediaItem? = null
-    override fun onCreate() {
-        super.onCreate()
-    }
+
 
     @SuppressLint("WrongConstant")
     fun initPlayer(url: String) {
@@ -95,24 +95,22 @@ class QuranPlayerService : Service() {
 
     }
 
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         super.onStartCommand(intent, flags, startId)
 
-        return START_STICKY
-    }
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
-
-    override fun onStart(intent: Intent?, startId: Int) {
-        super.onStart(intent, startId)
         quranUrl = intent?.getStringExtra(GET_URI).toString()
         notifyTitle = intent?.getStringExtra(GET_SURAH_NAME).toString()
         notifyDescription = intent?.getStringExtra(GET_READER_NAME).toString()
         initPlayer(quranUrl)
+        return START_STICKY
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        player?.playWhenReady = true
+        initPlayer(quranUrl)
+
+        return QuranServiceBinder()
     }
 
 
@@ -125,11 +123,14 @@ class QuranPlayerService : Service() {
         stopSelf()
     }
 
-    //destroy the app when remove form recent applications
-//    override fun onTaskRemoved(rootIntent: Intent?) {
-//        super.onTaskRemoved(rootIntent)
-//        onDestroy()
-//    }
+    // destroy the app when remove form recent applications
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        onDestroy()
+    }
 
 
+    inner class QuranServiceBinder : Binder() {
+        fun getExoPlayerInstance() = player
+    }
 }

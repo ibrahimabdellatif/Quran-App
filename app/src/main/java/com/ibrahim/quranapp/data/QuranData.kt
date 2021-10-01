@@ -20,5 +20,5 @@ data class QuranData(
     var letter: String = "",
 
 //    @SerializedName("suras")
-    var suras: String="",
+    var suras: String = "",
 )

@@ -1,8 +1,6 @@
 package com.ibrahim.quranapp.data
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
 data class SurahData(
     //number of surah
@@ -18,5 +16,5 @@ data class SurahData(
     @SerializedName("revelationType")
     var revelationType: String = "",
 
-    var surahData : List<SurahData>?=null
+    var surahData: List<SurahData>? = null
 )

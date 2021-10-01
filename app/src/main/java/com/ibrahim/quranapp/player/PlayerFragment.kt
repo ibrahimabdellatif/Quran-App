@@ -1,17 +1,27 @@
 package com.ibrahim.quranapp.player
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.util.Util
-import com.ibrahim.quranapp.*
+import com.ibrahim.quranapp.GET_READER_NAME
+import com.ibrahim.quranapp.GET_SURAH_NAME
+import com.ibrahim.quranapp.GET_URI
+import com.ibrahim.quranapp.R
+import com.ibrahim.quranapp.service.QuranPlayerService
 
 
 class PlayerFragment : Fragment() {
@@ -28,7 +38,25 @@ class PlayerFragment : Fragment() {
     private var readerName: TextView? = null
     private var nextValue = 0
 
+    lateinit var player :SimpleExoPlayer
     lateinit var playerView: PlayerView
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
+            if (iBinder is QuranPlayerService.QuranServiceBinder) {
+
+                player= iBinder.getExoPlayerInstance()!!
+                playerView.player = player
+                player.playWhenReady = true
+            }
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            Toast.makeText(context, "the service is ended!", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,11 +71,15 @@ class PlayerFragment : Fragment() {
             putExtra(GET_URI, url)
             putExtra(GET_SURAH_NAME, surahNameArgs)
             putExtra(GET_READER_NAME, readerNameArgs)
+            putExtra("view", view.toString())
         }
         context?.let { Util.startForegroundService(it, intent) }
-
+        context?.bindService(
+            Intent(context, QuranPlayerService::class.java),
+            connection,
+            Context.BIND_AUTO_CREATE
+        )
         playerView = view.findViewById(R.id.exo_player_view)
-
 
         logs()
         return view
