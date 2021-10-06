@@ -55,13 +55,16 @@
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/exo_player_view"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_reader_name_mp"
-        tools:ignore="MissingConstraints"
-        app:show_timeout="10000"/>
+        app:rewind_increment="10000"
+        app:auto_show="true"
+        app:use_controller="true"
+        app:show_timeout="10000"
+        tools:ignore="MissingConstraints" />
 
     <!--    <SeekBar-->
     <!--        android:id="@+id/seek_bar"-->
