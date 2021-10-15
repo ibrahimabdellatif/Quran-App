@@ -4,6 +4,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -14,7 +15,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerControlView
 import com.google.android.exoplayer2.util.Util
 import com.ibrahim.quranapp.*
 import com.ibrahim.quranapp.service.QuranPlayerService
@@ -35,7 +36,7 @@ class PlayerFragment : Fragment() {
     private var readerName: TextView? = null
 
     lateinit var player: SimpleExoPlayer
-    lateinit var playerView: PlayerView
+    lateinit var playerView: StyledPlayerControlView
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, iBinder: IBinder?) {
@@ -79,6 +80,11 @@ class PlayerFragment : Fragment() {
             Context.BIND_AUTO_CREATE
         )
         playerView = view.findViewById(R.id.exo_player_view)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            playerView.isFocusedByDefault
+        }
+
         logs()
         return view
     }
