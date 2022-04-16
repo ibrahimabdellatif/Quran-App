@@ -2,18 +2,20 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="4dp"
-    app:cardCornerRadius="7dp"
+    android:id="@+id/file_card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:backgroundTint="#055052"
+    app:cardCornerRadius="7dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_layout_file_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:layout_margin="4dp"
         android:background="#F3F2C9"
-        >
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/tv_surah_number"
@@ -55,8 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Medinan"
-            android:textSize="12dp"
             android:textColor="#055052"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_surah_english_name"
             app:layout_constraintTop_toTopOf="parent"

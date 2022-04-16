@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -27,6 +28,7 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var serverArgs: String? = null
     var readerNameArgs: String? = null
     var rewayaArgs: String? = null
+    var surasArgs: String? = null
 
     var surahDataList: List<SurahData>? = null
 
@@ -37,10 +39,9 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_files, container, false)
-
-
         getDataFromHomeFragment()
         initRetrofit(view)
+        surahDataList?.size?.let { Toast.makeText(context, it, Toast.LENGTH_LONG) }
         return view
     }
 
@@ -50,7 +51,7 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         layoutManager = LinearLayoutManager(activity)
         recyclerView?.setHasFixedSize(true)
         recyclerView?.layoutManager = layoutManager
-        recyclerView?.adapter = FilesAdapter(surahData, this)
+        recyclerView?.adapter = FilesAdapter(surahData, this, surasArgs)
     }
 
     fun initRetrofit(view: View) {
@@ -86,8 +87,7 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         serverArgs = args.server
         readerNameArgs = args.readerName
         rewayaArgs = args.rewaya
-
-
+        surasArgs = args.suras
     }
 
     @RequiresApi(Build.VERSION_CODES.N)

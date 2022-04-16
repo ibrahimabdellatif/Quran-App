@@ -87,10 +87,16 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val server = quranData?.get(position)?.Server
         val readerName = quranData?.get(position)?.name
         val rewaya = quranData?.get(position)?.rewaya
+        val suras = quranData?.get(position)?.suras
 
         //using saveArgs form navigation component to pass data between fragments
         var action =
-            HomeFragmentDirections.actionHomeFragmentToListFragment(server, readerName, rewaya)
+            HomeFragmentDirections.actionHomeFragmentToListFragment(
+                server,
+                readerName,
+                rewaya,
+                suras
+            )
         view?.findNavController()?.navigate(action)
 
 

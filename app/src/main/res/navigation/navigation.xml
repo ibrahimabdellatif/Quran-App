@@ -34,6 +34,10 @@
             android:name="rewaya"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="suras"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/playerFragment"
