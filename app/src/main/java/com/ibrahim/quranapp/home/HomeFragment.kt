@@ -39,6 +39,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener {
 //
 //        })
 
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 

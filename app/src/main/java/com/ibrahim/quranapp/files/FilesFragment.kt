@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +20,7 @@ import com.ibrahim.quranapp.network.SurahApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
     var recyclerView: RecyclerView? = null
@@ -41,7 +42,10 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
         val view = inflater.inflate(R.layout.fragment_files, container, false)
         getDataFromHomeFragment()
         initRetrofit(view)
-        surahDataList?.size?.let { Toast.makeText(context, it, Toast.LENGTH_LONG) }
+
+        //handle back button to go to the previous fragment which is home fragment
+        findNavController().backStack
+
         return view
     }
 
@@ -65,7 +69,6 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
                     surahDataList = it.data
                     surahRecyclerView(view, surahDataList!!)
                 }
-//                testTextView?.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<Data>, t: Throwable) {
