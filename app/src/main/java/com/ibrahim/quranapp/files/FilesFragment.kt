@@ -117,7 +117,8 @@ class FilesFragment : Fragment(), FilesAdapter.OnItemClickListener {
             readerNameArgs,
             rewayaArgs,
             surahName,
-            position + 1
+            surasList = surasArgs!!,
+            position = position + 1
         )
         view?.findNavController()?.navigate(action)
     }

@@ -27,6 +27,7 @@ class PlayerFragment : Fragment() {
     private var readerNameArgs = ""
     private var rewayaArgs = ""
     private var surahNameArgs = ""
+    private var surasArgs = ""
     private var positionArgs = 0
 
     private val args: PlayerFragmentArgs by navArgs()
@@ -70,6 +71,7 @@ class PlayerFragment : Fragment() {
             putExtra(GET_SURAH_NAME, surahNameArgs)
             putExtra(GET_READER_NAME, readerNameArgs)
             putExtra(GET_SERVER_ARGS, serverArgs)
+            putExtra(GET_SURASIDS_ARGS, surasArgs)
             putExtra(GET_SERVER_ARGS_POSITION, positionArgs)
 
         }
@@ -94,6 +96,7 @@ class PlayerFragment : Fragment() {
         readerNameArgs = args.readerName.toString()
         rewayaArgs = args.rewaya.toString()
         surahNameArgs = args.surahName.toString()
+        surasArgs = args.surasList
         positionArgs = args.position
     }
 

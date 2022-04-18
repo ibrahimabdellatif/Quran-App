@@ -22,6 +22,7 @@ class QuranPlayerService : Service() {
     private lateinit var playerNotificationManager: PlayerNotificationManager
     private var quranUrl = ""
     private var serverUrl = ""
+    private var surasIDs = ""
     private var positionOfItem = 0
     private var notifyTitle = ""
     private var notifyDescription = ""
@@ -30,25 +31,36 @@ class QuranPlayerService : Service() {
     private var playWhenReady = true
     private val currentWindow = 0
     private val playbackPosition = 0L
+    lateinit var surasNumbersList: List<Int>
 
     @SuppressLint("WrongConstant")
     fun initPlayer(url: String) {
+
+        surasNumbersList = surasIDs.split(",").map { it.toInt() }
 
 
         //init the simple player
         player = SimpleExoPlayer.Builder(applicationContext)
             .build()
             .also {
+                playList = arrayListOf()
 
-                for (i in 0..113) {
+                try {
+                    for (i in surasNumbersList.indices) {
 
-                    playList = arrayListOf()
-                    serverLink(serverUrl, i, positionOfItem)
+                        if (positionOfItem != 0) {
+                            serverLink(serverUrl, surasNumbersList[i])
+                        } else
+                            serverLink(serverUrl, positionOfItem)
 
-                    mediaItem = MediaItem.fromUri(quranUrl)
-                    playList.add(mediaItem!!)
-                    it.addMediaItems(playList)
+                        mediaItem = MediaItem.fromUri(quranUrl)
+                        playList.add(mediaItem!!)
+                    }
+                } catch (e: IndexOutOfBoundsException) {
+                    e.message
                 }
+
+                it.addMediaItems(playList)
 
                 it.playWhenReady = playWhenReady
                 it.seekTo(currentWindow, playbackPosition)
@@ -110,13 +122,17 @@ class QuranPlayerService : Service() {
 
     }
 
-    private fun serverLink(server: String, next: Int, position: Int) {
-        quranUrl = if (position + 1 in 1..9) {
-            "$server/00${position + next}.mp3"
-        } else if (position + 1 in 10..99) {
-            "$server/0${position + next}.mp3"
-        } else {
-            "$server/${position + next}.mp3"
+    private fun serverLink(server: String, surahId: Int) {
+        quranUrl = when {
+            surahId + 1 in 1..9 -> {
+                "$server/00${surahId}.mp3"
+            }
+            surahId + 1 in 10..99 -> {
+                "$server/0${surahId}.mp3"
+            }
+            else -> {
+                "$server/${surahId}.mp3"
+            }
         }
     }
 
@@ -128,8 +144,10 @@ class QuranPlayerService : Service() {
         positionOfItem = intent?.getIntExtra(GET_SERVER_ARGS_POSITION, 0)!!
         notifyTitle = intent.getStringExtra(GET_SURAH_NAME).toString()
         notifyDescription = intent.getStringExtra(GET_READER_NAME).toString()
+        surasIDs = intent.getStringExtra(GET_SURASIDS_ARGS).toString()
 
-        serverLink(serverUrl, 0, positionOfItem)
+
+        serverLink(serverUrl, positionOfItem)
         initPlayer(quranUrl)
 
         return START_STICKY
