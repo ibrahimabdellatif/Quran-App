@@ -38,7 +38,6 @@ class QuranPlayerService : Service() {
 
         surasNumbersList = surasIDs.split(",").map { it.toInt() }
 
-
         //init the simple player
         player = SimpleExoPlayer.Builder(applicationContext)
             .build()
@@ -48,11 +47,11 @@ class QuranPlayerService : Service() {
                 try {
                     for (i in surasNumbersList.indices) {
 
-                        if (positionOfItem != 0) {
-                            serverLink(serverUrl, surasNumbersList[i])
-                        } else
+                        if (i == 0) {
                             serverLink(serverUrl, positionOfItem)
-
+                        } else {
+                            serverLink(serverUrl, surasNumbersList[i])
+                        }
                         mediaItem = MediaItem.fromUri(quranUrl)
                         playList.add(mediaItem!!)
                     }
